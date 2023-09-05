@@ -63,6 +63,13 @@ class ITypesenseSettings(Interface):
         required=False,
     )
 
+    tika_timeout = schema.Int(
+        title=_("Tika response timeout"),   
+        title=_("How many seconds to wait for the server to send data before giving up"),
+        default=300,
+        required=True,
+    )
+
     review_states_to_index = schema.Text(
         title=_("Review states to index "),
         default=DEFAULT_REVIEW_STATES_TO_INDEX,

@@ -26,6 +26,7 @@ class FileIndexer:
 
         # index content with Tika, if available
         tika_url = api.portal.get_registry_record("tika_url", ITypesenseSettings)
+        tika_timeout = api.portal.get_registry_record("tika_timeout", ITypesenseSettings)
         if not tika_url:
             return indexable_content
 
@@ -35,7 +36,6 @@ class FileIndexer:
             fp.write(self.context.file.data)
 
         # send temporary file to Apache Tika
-        tika_timeout = 300
         try:
             parsed = tika.parser.from_file(tmp_fn, serverEndpoint=tika_url, requestOptions={'timeout': tika_timeout})
         except Exception as e:

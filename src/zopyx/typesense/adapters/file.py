@@ -35,13 +35,17 @@ class FileIndexer:
             fp.write(self.context.file.data)
 
         # send temporary file to Apache Tika
+        tika_timeout = 300
         try:
-            parsed = tika.parser.from_file(tmp_fn, serverEndpoint=tika_url)
+            parsed = tika.parser.from_file(tmp_fn, serverEndpoint=tika_url, requestOptions={'timeout': tika_timeout})
         except Exception as e:
             LOG.exception("Unable to interact with Tika", exc_info=True)
-            raise 
         finally:
             os.unlink(tmp_fn)
 
-        indexable_content["text"] += parsed["content"]
+        try:
+            indexable_content["text"] += parsed["content"]
+        except:
+            pass
+
         return indexable_content

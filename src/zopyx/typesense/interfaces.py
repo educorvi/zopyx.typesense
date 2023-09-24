@@ -65,7 +65,7 @@ class ITypesenseSettings(Interface):
 
     tika_timeout = schema.Int(
         title=_("Tika response timeout"),   
-        title=_("How many seconds to wait for the server to send data before giving up"),
+        description=_("How many seconds to wait for the server to send data before giving up"),
         default=300,
         required=True,
     )

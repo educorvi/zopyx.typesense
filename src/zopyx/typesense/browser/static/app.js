@@ -3,7 +3,7 @@
 /* global vars first */
 var remote_url = PORTAL_URL + "/@@typesense-search-settings";
 var ts_settings = null;
-                                  
+
 /* Show initially all hits with all form control (true)
  * or show only empty search field by default (false).
  */
@@ -75,7 +75,7 @@ search.addWidgets([
         container: '#searchbox',
         showSubmit: false,
         showReset: false,
-        placeholder: 'Search for... ',
+        placeholder: 'Suchbegriff eingeben... ',
         autofocus: false,
         searchAsYouType: true,
         showLoadingIndicator: true,
@@ -121,10 +121,10 @@ search.addWidgets([
         },
 
     }),
-    instantsearch.widgets.refinementList({
+    /* instantsearch.widgets.refinementList({
         container: '#review-state',
         attribute: 'review_state',
-    }),
+    }), */
     instantsearch.widgets.refinementList({
         container: '#portal-type',
         attribute: 'portal_type',
@@ -134,19 +134,19 @@ search.addWidgets([
         container: '#subject',
         attribute: 'subject',
     }),
-    instantsearch.widgets.refinementList({
+    /* instantsearch.widgets.refinementList({
         container: '#language',
         attribute: 'language',
-    }),
+    }),*/
 
     instantsearch.widgets.stats({
         container: '#stats',
         templates: {
             text: `
-      {{#hasNoResults}}No hits{{/hasNoResults}}
-      {{#hasOneResult}}1 hit{{/hasOneResult}}
-      {{#hasManyResults}}{{#helpers.formatNumber}}{{nbHits}}{{/helpers.formatNumber}} hits {{/hasManyResults}}
-      found in {{processingTimeMS}} ms
+      {{#hasNoResults}}Keine Treffer{{/hasNoResults}}
+      {{#hasOneResult}}1 Treffer{{/hasOneResult}}
+      {{#hasManyResults}}{{#helpers.formatNumber}}{{nbHits}}{{/helpers.formatNumber}} Treffer {{/hasManyResults}}
+      gefunden in {{processingTimeMS}} ms
     `,
         },
         cssClasses: {
@@ -157,17 +157,17 @@ search.addWidgets([
     instantsearch.widgets.hitsPerPage({
         container: '#hits-per-page',
         items: [{
-            label: '10 per page',
+            label: '10 pro Seite',
             value: 10,
             default: true
         }, {
-            label: '20 per page',
+            label: '20 pro Seite',
             value: 20
         }, {
-            label: '50 per page',
+            label: '50 pro Seite',
             value: 50
         }, {
-            label: '100 per page',
+            label: '100 pro Seite',
             value: 100
         }, ],
         cssClasses: {

@@ -6,24 +6,11 @@
 
     <metal:block fill-slot="main">
 
-        <h1 class="documentFirstHeading">Typesense Search</h1>
+        <h1 class="documentFirstHeading">Suche</h1>
 
         <div class="container">
             <div class="search-panel">
-              <div class="search-panel__filters">
-                <div class="refinement-label" i18n:translate="">Portal Type</div>
-                <div id="portal-type"></div>
-                <br/>
-                <div class="refinement-label" i18n:translate="">Review state</div>
-                <div id="review-state"></div>
-                <br/>
-                <div class="refinement-label" i18n:translate="">Language</div>
-                <div id="language"></div>
-                <br/>
-                <div class="refinement-label" i18n:translate="">Subject</div>
-                <div id="subject"></div>
-                <br/>
-              </div>
+
 
               <div class="search-panel__results">
                 <div id="searchbox"></div>
@@ -34,6 +21,27 @@
                 </div>
                 <div id="hits"></div>
               </div>
+
+              <div class="search-panel__filters ml-5">
+                <h2>Filtern nach:</h2>
+                <div class="refinement-label" i18n:translate="">Artikeltyp</div>
+                <div id="portal-type"></div>
+                <br/>
+                <!--
+                <div class="refinement-label" i18n:translate="">Status</div>
+                <div id="review-state"></div>
+                <br/>
+                -->
+                <!--
+                <div class="refinement-label" i18n:translate="">Language</div>
+                <div id="language"></div>
+                <br/>
+                -->
+                <div class="refinement-label" i18n:translate="">Thema</div>
+                <div id="subject"></div>
+                <br/>
+              </div>
+
             </div>
         </div>
 

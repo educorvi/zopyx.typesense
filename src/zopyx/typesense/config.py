@@ -43,5 +43,16 @@ COLLECTION_SCHEMA = {
 
 COLLECTION_SCHEMA_JSON = json.dumps(COLLECTION_SCHEMA, indent=2)
 
+QUERY_BY_WEIGHTS = {
+    "fields": [
+        {"name": "title", "weight": "4"},
+        {"name": "headlines", "weight": "2"},
+        {"name": "text", "weight": "1"},
+    ]
+}
+
+QUERY_BY_WEIGHTS_JSON = json.dumps(QUERY_BY_WEIGHTS, indent=2)
+
+
 # CRLF separated list of review_states to be indexes
 DEFAULT_REVIEW_STATES_TO_INDEX = "published"

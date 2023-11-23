@@ -1,6 +1,7 @@
 from Products.Five.browser import BrowserView
 from zopyx.typesense import _, LOG
 from zopyx.typesense.api import API
+from zopyx.typesense.interfaces import ITypesenseSettings
 
 import gzip
 import json
@@ -8,6 +9,8 @@ import os
 import plone.api
 import progressbar
 import time
+
+from plone import api
 
 
 class View(BrowserView):
@@ -183,12 +186,22 @@ class View(BrowserView):
 
         ts_api = API()
 
+        query_by_with_weights = api.portal.get_registry_record(
+            "query_by_with_weights", ITypesenseSettings
+        )
+        query_by_with_weights_dict = json.loads(query_by_with_weights)["fields"]
+
+        query_by = ','.join([d.get("name") for d in query_by_with_weights_dict if d.get("name")])
+        weights = ','.join([d.get("weight") for d in query_by_with_weights_dict if d.get("weight")])
+
         settings = dict()
         settings["collection"] = ts_api.collection
         settings["api_key"] = ts_api.search_api_key
         settings["nodes"] = ts_api.nodes
-        settings["query_by"] = "title,headlines,text"
-        settings["query_weights"] = "4,2,1"
+        #settings["query_by"] = "title,headlines,text"
+        #settings["query_weights"] = "4,2,1"
+        settings["query_by"] = query_by
+        settings["query_weights"] = weights
 
         self.request.response.setHeader("content-type", "application/json")
         return json.dumps(settings)

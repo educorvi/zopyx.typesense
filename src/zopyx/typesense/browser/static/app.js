@@ -40,6 +40,8 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         filterBy: filterBy
     },
 });
+console.log(ts_settings["query_by"]);
+console.log(ts_settings["query_by_weights"]);
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 const search = instantsearch({

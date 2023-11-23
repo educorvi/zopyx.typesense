@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module where all interfaces, events and exceptions live."""
 
-from .config import COLLECTION_SCHEMA_JSON, DEFAULT_REVIEW_STATES_TO_INDEX
+from .config import COLLECTION_SCHEMA_JSON, DEFAULT_REVIEW_STATES_TO_INDEX, QUERY_BY_WEIGHTS_JSON
 from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
@@ -64,7 +64,7 @@ class ITypesenseSettings(Interface):
     )
 
     tika_timeout = schema.Int(
-        title=_("Tika response timeout"),   
+        title=_("Tika response timeout"),
         description=_("How many seconds to wait for the server to send data before giving up"),
         default=300,
         required=True,
@@ -86,6 +86,13 @@ class ITypesenseSettings(Interface):
         title=_("Use SearchableText for indexing as default"),
         default=False,
         required=False,
+    )
+
+    query_by_with_weights = schema.Text(
+        title=_("Collection fields for query"),
+        description=_("The Typesense Collection Fields (specified in Collection schema) that should be queried against. Values for the weights between 0 and 127. A field with a higher weight gets prioritized"),
+        default=QUERY_BY_WEIGHTS_JSON,
+        required=True,
     )
 
 

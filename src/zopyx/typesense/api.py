@@ -63,8 +63,10 @@ class API:
         if not data:
             return
 
-        target_collection = collection if collection else self.collection
+        # Absolute Document URL
+        data['absolute_url'] = obj.absolute_url()
 
+        target_collection = collection if collection else self.collection
         ts_index(
             ts_client=self.get_typesense_client(),
             collection=target_collection,
@@ -103,7 +105,7 @@ class API:
 
         if not ignore_review_state and not review_state in review_states_to_index:
             # don't index content without proper review state
-            LOG.debug(f"Skipping object {obj.absolute_url(1)} due to review_state {review_state}")        
+            LOG.debug(f"Skipping object {obj.absolute_url(1)} due to review_state {review_state}")
             return
 
         # language
@@ -268,7 +270,7 @@ class API:
 
         if update_schema["fields"]:
             client.collections[self.collection].update(update_schema)
-            LOG.info(f"Schema of collection {self.collection} updated: {update_schema}") 
+            LOG.info(f"Schema of collection {self.collection} updated: {update_schema}")
         else:
             LOG.info(f"No schema update information found for collection {self.collection}")
 

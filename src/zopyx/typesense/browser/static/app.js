@@ -93,7 +93,7 @@ search.addWidgets([
         templates: {
             item: `
           <div class="hit">
-            <div class="hit-title"> <a class="hit-link" href="${PORTAL_URL}/{{path}}\">{{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}</a></div>
+            <div class="hit-title"> <a class="hit-link" href="{{#helpers.highlight}}{ "attribute": "absolute_url" }{{/helpers.highlight}}\">{{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}</a></div>
             <div class="hit-meta">
                 <span class="hit-portal_type">{{#helpers.highlight}}{ "attribute": "portal_type" }{{/helpers.highlight}}</span> |
                 <span class="hit-review_state">{{#helpers.highlight}}{ "attribute": "review_state" }{{/helpers.highlight}}</span> |
@@ -109,6 +109,54 @@ search.addWidgets([
 `,
         },
     }),
+    /*
+    instantsearch.widgets.index({
+        searchClient,
+        indexName: 'onko',
+        searchFunction(helper) {
+            if (! SHOW_ALL_HITS_INITIALLY) {
+                if (helper.state.query === '') {
+                    $('.refinement-label').hide();
+                    $('.ais-RefinementList-list').hide();
+                    $('#search-control').hide();
+                    $('#hits').hide();
+                } else {
+                    $('.refinement-label').show();
+                    $('.ais-RefinementList-list').show();
+                    $('#search-control').show();
+                    $('#hits').show();
+                    helper.search();
+                }
+            } else {
+                    helper.search();
+            }
+        }
+    })
+    .addWidgets([
+        instantsearch.widgets.hits({
+            container: '#hits',
+            templates: {
+                item: `
+              <div class="hit">
+                <div class="hit-title"> <a class="hit-link" href="{{#helpers.highlight}}{ "attribute": "absolute_url" }{{/helpers.highlight}}\">{{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}</a></div>
+                <div class="hit-meta">
+                    <span class="hit-portal_type">{{#helpers.highlight}}{ "attribute": "portal_type" }{{/helpers.highlight}}</span> |
+                    <span class="hit-review_state">{{#helpers.highlight}}{ "attribute": "review_state" }{{/helpers.highlight}}</span> |
+                    <span class="hit-created">{{#helpers.highlight}}{ "attribute": "created" }{{/helpers.highlight}}</span> |
+                    <span class="hit-modified">{{#helpers.highlight}}{ "attribute": "modified" }{{/helpers.highlight}}</span>
+                </div>
+                <!--
+                <div class="hit-text">{{#helpers.highlight}}{ "attribute": "text" }{{/helpers.highlight}}</div>
+                -->
+                <div class="hit-text" id="hits-headlines">{{#helpers.snippet}}{ "attribute": "headlines" }{{/helpers.snippet}}</div>
+                <div class="hit-text" id="hits-text">{{#helpers.snippet}}{ "attribute": "text" }{{/helpers.snippet}}</div>
+              </div>
+    `,
+            },
+        }),
+    ]),
+    */
+
     instantsearch.widgets.pagination({
         container: '#pagination',
         root: "nav",

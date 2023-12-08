@@ -8,6 +8,7 @@ import json
 COLLECTION_SCHEMA = {
     "name": None,
     "fields": [
+        {"name": "absolute_url", "type": "string"},
         {"name": "path", "type": "string"},
         {"name": "id", "type": "string"},
         {"name": "title", "type": "string", "infix": True},

@@ -19,6 +19,7 @@ function getSearchSettings() {
 }
 
 ts_settings = JSON.parse(getSearchSettings());
+console.log(ts_settings);
 
 var filterBy = '';
 if (CURRENT_PATH.length > 1) // root = "/"
@@ -70,6 +71,12 @@ const search = instantsearch({
  * Example:
  * https://github.com/typesense/showcase-ecommerce-store/blob/master/src/app.js
  */
+
+const filter_list = []
+filter_list.push(ts_settings["collection"]);
+ts_settings["external_collections"].forEach((portal) => filter_list.push(portal));
+const filters = filter_list.map(portal => `portal:${portal}`).join(' OR ');
+//search.setQueryParameter('filters', filters);
 
 search.addWidgets([
     instantsearch.widgets.searchBox({

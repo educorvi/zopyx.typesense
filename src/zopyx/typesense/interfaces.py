@@ -21,9 +21,16 @@ class ITypesenseSettings(Interface):
     )
 
     collection = schema.TextLine(
-        title=_("Name of Typesense collection"),
+        title=_("Name of Typesense collection for this portal"),
         default="typesense",
         required=True,
+    )
+
+    external_collections = schema.TextLine(
+        title=_("Names of external Typesense collections"),
+        default="",
+        description=_("Separate by comma (and space optional)"),
+        required=False,
     )
 
     api_key = schema.TextLine(

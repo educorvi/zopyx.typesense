@@ -194,8 +194,18 @@ class View(BrowserView):
         query_by = ','.join([d.get("name") for d in query_by_with_weights_dict if d.get("name")])
         weights = ','.join([d.get("weight") for d in query_by_with_weights_dict if d.get("weight")])
 
+        external_collections_raw = api.portal.get_registry_record(
+            "external_collections", ITypesenseSettings
+        )
+
+        if external_collections_raw:
+            external_collections = external_collections_raw.replace(" ", "").split(",")
+        else:
+            external_collections = []
+
         settings = dict()
         settings["collection"] = ts_api.collection
+        settings["external_collections"] = external_collections
         settings["api_key"] = ts_api.search_api_key
         settings["nodes"] = ts_api.nodes
         #settings["query_by"] = "title,headlines,text"

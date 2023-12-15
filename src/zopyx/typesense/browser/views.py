@@ -72,6 +72,42 @@ class View(BrowserView):
 
     def reindex_all(self):
         """Reindex all"""
+        import pdb; pdb.set_trace()
+        ts = time.time()
+        ts_api = API()
+        #        ts_api.drop_collection()
+        collection = ts_api.collection
+
+        portal_id = api.portal.get_registry_record("portal_id", ITypesenseSettings)
+        ts_api.delete_documents(portal_id)
+
+        catalog = plone.api.portal.get_tool("portal_catalog")
+        brains = catalog()
+        num_brains = len(list(brains))
+
+        with progressbar.ProgressBar(max_value=num_brains) as pg:
+            for i, brain in enumerate(brains):
+                pg.update(i)
+                obj = brain.getObject()
+                ts_api.index_document(obj, collection)
+
+        duration = time.time() - ts
+        LOG.info(
+            f"All content submitted for reindexing ({num_brains} items), duration {duration:.2f} seconds"
+        )
+
+        portal = plone.api.portal.get()
+        plone.api.portal.show_message(
+            _(
+                "All content submitted for reindexing. Results may/will show up delayed depending on the amount of documents!"
+            ),
+            request=self.request,
+        )
+        self.request.response.redirect(portal.absolute_url() + "/@@typesense-admin")
+
+    """
+    def reindex_all(self):
+        #Reindex all
 
         ts = time.time()
         ts_api = API()
@@ -105,6 +141,7 @@ class View(BrowserView):
             request=self.request,
         )
         self.request.response.redirect(portal.absolute_url() + "/@@typesense-admin")
+    """
 
     def search_result(self):
         """Search UI for admin view"""
@@ -194,18 +231,23 @@ class View(BrowserView):
         query_by = ','.join([d.get("name") for d in query_by_with_weights_dict if d.get("name")])
         weights = ','.join([d.get("weight") for d in query_by_with_weights_dict if d.get("weight")])
 
-        external_collections_raw = api.portal.get_registry_record(
-            "external_collections", ITypesenseSettings
+        external_portals_raw = api.portal.get_registry_record(
+            "external_portal_ids", ITypesenseSettings
         )
 
-        if external_collections_raw:
-            external_collections = external_collections_raw.replace(" ", "").split(",")
+        if external_portals_raw:
+            external_portal_ids = external_portals_raw.replace(" ", "").split(",")
         else:
-            external_collections = []
+            external_portal_ids = []
+
+        portal_id = api.portal.get_registry_record(
+            "portal_id", ITypesenseSettings
+        )
 
         settings = dict()
         settings["collection"] = ts_api.collection
-        settings["external_collections"] = external_collections
+        settings["portal_id"] = portal_id
+        settings["external_portal_ids"] = external_portal_ids
         settings["api_key"] = ts_api.search_api_key
         settings["nodes"] = ts_api.nodes
         #settings["query_by"] = "title,headlines,text"

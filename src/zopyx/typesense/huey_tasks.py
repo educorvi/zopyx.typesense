@@ -30,3 +30,16 @@ def ts_unindex(ts_client, collection, document_id, document_path):
         ts_client.collections[collection].documents[document_id].delete()
     except typesense.exceptions.ObjectNotFound:
         pass
+
+
+@huey.task()
+def ts_delete(ts_client, collection, portal_id):
+
+    LOG.debug(f"Deleting Documents of {portal_id}")
+
+    try:
+        ts_client.collections[collection].documents.delete({'filter_by': 'portal_id:' + portal_id})
+    except typesense.exceptions.ObjectNotFound:
+        LOG.error(f"Collection {collection} does not seem to exist")
+        pass
+

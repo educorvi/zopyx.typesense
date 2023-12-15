@@ -15,19 +15,25 @@ class IBrowserLayer(IDefaultBrowserLayer):
 class ITypesenseSettings(Interface):
     """Connector settings"""
 
+    collection = schema.TextLine(
+        title=_("Name of Typesense collection for indexing sites of this portal"),
+        default="typesense",
+        required=True,
+    )
+
     enabled = schema.Bool(
         title=_("Typesense integration enabled"),
         default=False,
     )
 
-    collection = schema.TextLine(
-        title=_("Name of Typesense collection for this portal"),
-        default="typesense",
+    portal_id = schema.TextLine(
+        title=_("Portal ID for indexed sites of this portal"),
+        default="",
         required=True,
     )
 
-    external_collections = schema.TextLine(
-        title=_("Names of external Typesense collections"),
+    external_portal_ids = schema.TextLine(
+        title=_("Names of external indexed portals for searching"),
         default="",
         description=_("Separate by comma (and space optional)"),
         required=False,

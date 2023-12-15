@@ -24,6 +24,9 @@
 
               <div class="search-panel__filters ml-5">
                 <h2>Filtern nach:</h2>
+                <div class="refinement-label" i18n:translate="">Portal</div>
+                <div id="portal-id"></div>
+                <br/>
                 <div class="refinement-label" i18n:translate="">Artikeltyp</div>
                 <div id="portal-type"></div>
                 <br/>

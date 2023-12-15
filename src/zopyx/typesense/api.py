@@ -1,4 +1,4 @@
-from .huey_tasks import ts_index, ts_unindex
+from .huey_tasks import ts_index, ts_unindex, ts_delete
 from datetime import datetime
 from plone import api
 from plone.app.contenttypes.indexers import SearchableText
@@ -63,7 +63,7 @@ class API:
         if not data:
             return
 
-        # Absolute Document URL
+        data['portal_id'] = api.portal.get_registry_record("portal_id", ITypesenseSettings)
         data['absolute_url'] = obj.absolute_url()
 
         target_collection = collection if collection else self.collection
@@ -83,6 +83,15 @@ class API:
             collection=self.collection,
             document_id=self.document_id(obj),
             document_path=self.document_path(obj),
+        )
+
+    def delete_documents(self, portal_id):
+        """Unindex documents for the `portal_id`"""
+
+        ts_delete(
+            ts_client=self.get_typesense_client(),
+            collection=self.collection,
+            portal_id=portal_id,
         )
 
     def indexable_content(self, obj):

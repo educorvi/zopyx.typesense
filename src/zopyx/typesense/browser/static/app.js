@@ -73,8 +73,8 @@ const search = instantsearch({
  */
 
 const filter_list = []
-filter_list.push(ts_settings["collection"]);
-ts_settings["external_collections"].forEach((portal) => filter_list.push(portal));
+filter_list.push(ts_settings["portal_id"]);
+ts_settings["external_portal_ids"].forEach((portal) => filter_list.push(portal));
 const filters = filter_list.map(portal => `portal:${portal}`).join(' OR ');
 //search.setQueryParameter('filters', filters);
 
@@ -181,6 +181,11 @@ search.addWidgets([
         container: '#review-state',
         attribute: 'review_state',
     }), */
+    instantsearch.widgets.refinementList({
+        container: '#portal-id',
+        attribute: 'portal_id',
+        showMore: false
+    }),
     instantsearch.widgets.refinementList({
         container: '#portal-type',
         attribute: 'portal_type',

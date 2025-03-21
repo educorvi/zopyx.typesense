@@ -63,6 +63,13 @@ class ITypesenseSettings(Interface):
         required=False,
     )
 
+    tika_timeout = schema.Int(
+        title=_("Request-Timeout for tika connections"),
+        description=_("Timeout in seconds, you should increase if you have large files in your CMS"),
+        required=True,
+        default=60,
+    )
+
     review_states_to_index = schema.Text(
         title=_("Review states to index "),
         default=DEFAULT_REVIEW_STATES_TO_INDEX,

@@ -59,7 +59,7 @@ class ITypesenseSettings(Interface):
 
     tika_url = schema.TextLine(
         title=_("URL of Tika server for indexing office formats"),
-        description=_("URL Tika server"),
+        description=_("URL Tika server. If you use basic-auth you can use it within url, example: https://user:password@myurl.org"),
         required=False,
     )
 

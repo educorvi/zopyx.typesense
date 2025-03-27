@@ -7,7 +7,7 @@ from plone.dexterity.utils import iterSchemata
 from zope.component import ComponentLookupError, getAdapter
 from zope.interface.interfaces import ComponentLookupError
 from zope.schema import getFields
-from zopyx.typesense import _, LOG
+from zopyx.typesense import _, LOG, logger
 from zopyx.typesense.interfaces import ITypesenseIndexDataProvider, ITypesenseSettings
 
 import furl
@@ -103,7 +103,7 @@ class API:
 
         if not ignore_review_state and not review_state in review_states_to_index:
             # don't index content without proper review state
-            LOG.debug(f"Skipping object {obj.absolute_url(1)} due to review_state {review_state}")        
+            LOG.debug(f"Skipping object {obj.absolute_url(1)} due to review_state {review_state}")
             return
 
         # language
@@ -137,7 +137,7 @@ class API:
         if use_searchabletext:
             # use Plone's SearchableText implemenation
             indexable_text = SearchableText(obj)
-            indexable_headlines = []
+            indexable_headlines = " "
         else:
             # or our own indexable text content
             indexable_text = []
@@ -164,9 +164,19 @@ class API:
                     indexable_text.append(text)
 
             indexable_text = [text for text in indexable_text if text]
-            indexable_text = " ".join(indexable_text)
+            try:
+                indexable_text = " ".join(indexable_text)
+            except:
+                logger.info(f"Error while indexing {obj.absolute_url()}")
+                indexable_text = " "
+
             indexable_headlines = [text for text in indexable_headlines if text]
-            indexable_headlines = " ".join(indexable_headlines)
+            try:
+                indexable_headlines = " ".join(indexable_headlines)
+            except:
+                logger.info(f"Error while indexing headlines for {obj.absolute_url()}")
+                indexable_headlines = " "
+
 
         d["text"] = indexable_text
         d["headlines"] = indexable_headlines

@@ -11,7 +11,7 @@ import tempfile
 import tika
 import tika.parser
 
-from .. import LOG
+from .. import LOG, logger
 
 import base64
 from urllib.parse import urlparse
@@ -58,10 +58,16 @@ class FileIndexer:
                 parsed = tika.parser.from_file(tmp_fn, serverEndpoint=tika_url, requestOptions={'timeout':tika_timeout})
         except Exception as e:
             LOG.exception("Unable to interact with Tika", exc_info=True)
+            logger.info("Unable to interact with Tika")
             #raise
             pass # Indexing should be continued even the interaction has some errors
         finally:
             os.unlink(tmp_fn)
 
-        indexable_content["text"] += parsed["content"]
+        try:
+            indexable_content["text"] += parsed["content"]
+        except:
+            LOG.exception("Unable to concatonate text and parsed text", exc_info=True)
+            logger.info("Unable to concatonate text and parsed text")
+            pass
         return indexable_content

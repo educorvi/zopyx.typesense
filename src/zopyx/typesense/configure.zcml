@@ -20,7 +20,7 @@
 
   <subscriber
     for="plone.dexterity.interfaces.IDexterityContent
-         zope.lifecycleevent.IObjectModifiedEvent"
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".indexer.update_content"
     />
 

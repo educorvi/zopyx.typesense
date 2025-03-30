@@ -108,7 +108,8 @@ class API:
 
         # language
         default_language = api.portal.get_default_language()
-        language = obj.Language() or default_language
+        if hasattr(obj, 'Language'):
+            language = obj.Language() or default_language
 
         document_id = self.document_id(obj)
 

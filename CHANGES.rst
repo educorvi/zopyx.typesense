@@ -7,6 +7,17 @@ Changelog
 - fixed issue in JSON export with U+2028 as line-ending within content
   [zopyx]
 
+- configurable timeout for tika connection
+  [lwalther]
+
+- erros during tika connections dont break indexing
+  [lwalther]
+
+- basic auth handling for tika server connections
+  [lwalther]
+
+- some fixes or error handlings for special situations
+  [lwalther]
 
 1.0a8 (2022-07-03)
 ------------------

@@ -88,6 +88,12 @@ class ITypesenseSettings(Interface):
         required=False,
     )
 
+    use_scope = schema.Bool(
+        title=_("Use configured Scopes for specify search area"),
+        default=False,
+        required=False,
+    )
+
 
 class ITypesenseIndexDataProvider(Interface):
     """Adapter for custom indexing"""

@@ -9,6 +9,7 @@ from zope.interface.interfaces import ComponentLookupError
 from zope.schema import getFields
 from zopyx.typesense import _, LOG, logger
 from zopyx.typesense.interfaces import ITypesenseIndexDataProvider, ITypesenseSettings
+from Products.CMFCore.interfaces import ISiteRoot
 
 import furl
 import html_text
@@ -18,6 +19,17 @@ import lxml.etree
 import typesense
 import zope.schema
 
+
+def getAcquisitionChain(obj):
+    inner = obj.aq_inner
+    iter = inner
+    while iter is not None:
+        yield iter
+        if ISiteRoot.providedBy(iter):
+            break
+        if not hasattr(iter, "aq_parent"):
+            raise RuntimeError("Parent traversing interrupted by object: " + str(parent))
+        iter = iter.aq_parent
 
 def html2text(html):
 
@@ -73,6 +85,23 @@ class API:
             document_path=self.document_path(obj),
         )
 
+    def createScope(self, obj, objectlist):
+        scope = ''
+        for elem in objectlist:
+            if elem == obj:
+                continue
+            part = getattr(elem.aq_inner, 'scopeid', '')
+            if scope:
+                if part:
+                    scope = f"{part}.{scope}"
+            else:
+                scope = part
+        if not scope:
+            return self.collection
+        scope=f"{self.collection}.{scope}"
+        print(scope)
+        return scope
+
     def unindex_document(self, obj):
         """Unindex document `obj`"""
 
@@ -118,6 +147,7 @@ class API:
         d["id_original"] = obj.getId()
         d["title"] = obj.Title()
         d["description"] = obj.Description()
+        d["scope"] = ""
         d["language"] = language
         d["portal_type"] = obj.portal_type
         d["review_state"] = review_state
@@ -135,6 +165,13 @@ class API:
         use_searchabletext = api.portal.get_registry_record(
             "use_searchabletext", ITypesenseSettings
         )
+        use_scope = api.portal.get_registry_record(
+            "use_scope", ITypesenseSettings
+        )
+        if use_scope:
+            backpath = getAcquisitionChain(obj)
+            scope = self.createScope(obj, backpath)
+            d["scope"] = scope
         if use_searchabletext:
             # use Plone's SearchableText implemenation
             indexable_text = SearchableText(obj)

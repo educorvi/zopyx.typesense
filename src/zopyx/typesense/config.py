@@ -12,6 +12,7 @@ COLLECTION_SCHEMA = {
         {"name": "id", "type": "string"},
         {"name": "title", "type": "string", "infix": True},
         {"name": "description", "type": "string"},
+        {"name": "scope", "type": "string"},
         {"name": "headlines", "type": "string"},
         {"name": "text", "type": "string", "infix": True},
         {"name": "language", "type": "string", "facet": True},

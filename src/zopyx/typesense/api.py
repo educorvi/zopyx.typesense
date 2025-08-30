@@ -112,6 +112,14 @@ class API:
             document_path=self.document_path(obj),
         )
 
+    def checkindex(self, obj, objectlist):
+        """ Check if object should be indexed """
+        for elem in objectlist:
+            aiex = getattr(elem.aq_inner, 'aiex', False)
+            if aiex:
+                return False
+        return True
+
     def indexable_content(self, obj):
         """Return dict with indexable content for `obj`"""
 
@@ -134,6 +142,12 @@ class API:
             # don't index content without proper review state
             LOG.debug(f"Skipping object {obj.absolute_url(1)} due to review_state {review_state}")
             return
+
+        backpath = getAcquisitionChain(obj)
+        if not self.checkindex(obj, backpath):
+            LOG.debug(f"Scipping object due to exclude ai search setting")
+            return
+
 
         # language
         default_language = api.portal.get_default_language()
@@ -169,7 +183,6 @@ class API:
             "use_scope", ITypesenseSettings
         )
         if use_scope:
-            backpath = getAcquisitionChain(obj)
             scope = self.createScope(obj, backpath)
             d["scope"] = scope
         if use_searchabletext:

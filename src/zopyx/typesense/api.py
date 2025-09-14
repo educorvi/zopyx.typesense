@@ -148,6 +148,7 @@ class API:
             LOG.debug(f"Scipping object due to exclude ai search setting")
             return
 
+        backpath = getAcquisitionChain(obj)
 
         # language
         default_language = api.portal.get_default_language()

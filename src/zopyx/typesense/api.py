@@ -85,6 +85,7 @@ class API:
             document_path=self.document_path(obj),
         )
 
+
     def createScope(self, obj, objectlist):
         scope = ''
         for elem in objectlist:
@@ -98,9 +99,11 @@ class API:
                 scope = part
         if not scope:
             return self.collection
-        scope=f"{self.collection}.{scope}"
-        print(scope)
+        scope = f"{self.collection}.{scope}"
+        print(f'##Scope:{scope} ##')
+        LOG.info(f'##Scope:{scope} ##')
         return scope
+
 
     def unindex_document(self, obj):
         """Unindex document `obj`"""
@@ -143,12 +146,20 @@ class API:
             LOG.debug(f"Skipping object {obj.absolute_url(1)} due to review_state {review_state}")
             return
 
+        ignore_types = api.portal.get_registry_record('plone.types_not_searched', default=())
+        if obj.portal_type in ignore_types:
+            LOG.debug(f"Skipping object {obj.absolute_url(1)} due to portal_type {obj.portal_type}")
+            print(f"Skipping object {obj.absolute_url(1)} due to portal_type {obj.portal_type}")
+            return
+
         backpath = getAcquisitionChain(obj)
         if not self.checkindex(obj, backpath):
             LOG.debug(f"Scipping object due to exclude ai search setting")
             return
 
         backpath = getAcquisitionChain(obj)
+        print("2nd Backpath")
+        print(backpath)
 
         # language
         default_language = api.portal.get_default_language()
@@ -245,6 +256,7 @@ class API:
         if adapter:
             d = adapter.get_indexable_content(d)
 
+        print(d)
         return d
 
     def indexed_content(self, obj):

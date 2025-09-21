@@ -1,10 +1,12 @@
 Changelog
 =========
 
-1.0.0a10 (unreleased)
----------------------
+1.0.0 (2025-09-21)
+------------------
 
-- Nothing changed yet.
+- Indexierung des Scopes
+- Unterbinden der ausgeschlossenen Content-Types
+- Berücksichtigung ausgeschlossener Ordner
 
 
 1.0.0a9 (2025-03-30)
